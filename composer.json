@@ -1,0 +1,6 @@
+{
+  "name": "drupal/toolz",
+  "type": "drupal-module",
+  "description": "Toolz",
+  "license": "GPL-2.0+"
+}
