@@ -1,0 +1,26 @@
+<?php
+
+use Drupal\Core\Site\Settings;
+
+/**
+ * Implements hook_template_preprocess_default_variables_alter().
+ */
+function toolz_template_preprocess_default_variables_alter(&$variables) {
+  $variables['current_path'] = \Drupal::service('path.current')->getPath();
+  $variables['current_route'] = \Drupal::routeMatch()->getRouteName();
+}
+
+/**
+ * Implements hook_css_alter().
+ */
+function toolz_css_alter(&$css) {
+  // Enable the ability to toggle <link> as opposed to <style> @import during
+  // development via settings.local.php variable. This will allow tools like
+  // BrowserSync and LiveReload to work properly.
+  $dev_enabled = Settings::get('toolz_css_dev');
+  if (isset($dev_enabled) && $dev_enabled === TRUE) {
+    foreach ($css as $key => $value) {
+      $css[$key]['preprocess'] = FALSE;
+    }
+  }
+}

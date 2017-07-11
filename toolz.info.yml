@@ -1,0 +1,5 @@
+name: Toolz
+core: 8.x
+description: My personal collection of common techniques I tend to employ when developing Drupal 8 themes.
+package: Development
+type: module

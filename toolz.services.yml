@@ -1,0 +1,5 @@
+services:
+  toolz.twig_extension:
+    class: \Drupal\toolz\TwigExtension
+    tags:
+      - { name: twig.extension }
