@@ -10,7 +10,7 @@ This module alters default template variables to add the following:
 - `current_path`
 - `current_route`
 
-## Local Development Setting to use `<style>` over `<link>`
+## Local Development Setting to use `<link>` over `<style>`
 
 A Development option to use `<link>` instead of `<style>` for CSS, so BrowserSync and friends will work. Use it for local development by adding the line below to `settings.local.php`:
 
