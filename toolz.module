@@ -24,3 +24,62 @@ function toolz_css_alter(&$css) {
     }
   }
 }
+
+/**
+ * Implements hook_theme_suggestions_HOOK_alter().
+ */
+function toolz_theme_suggestions_container_alter(array &$suggestions, array $variables) {
+  if (!empty($variables['element'])) {
+    $element = $variables['element'];
+  }
+
+  // Provide suggestions to create context, if none already exist.
+  if (empty($suggestions)) {
+    // If there are no suggestions the implementation is likely via
+    // #theme_wrappers, which doesn't provide any context. In that case, use the
+    // element being wrapped to derive better context.
+    if (!empty($element['#theme_wrappers'])) {
+      if (in_array('container', $element['#theme_wrappers'])) {
+        // If #type and #theme_wrappers are both 'container', avoid making the
+        // context situation worse.
+        if (!empty($element['#type']) && $element['#type'] == 'container') {
+          // The children elements likely use #theme, which tells us what is
+          // being rendered. This will capture things like the views more link:
+          // container__more_link.
+          foreach (Element::children($element) as $key) {
+            if (!empty($element[$key]['#theme'])) {
+              if (is_array($element[$key]['#theme'])) {
+                // If #theme is an array, capture all values.
+                // @todo Maybe it's enough to just use the first or last.
+                foreach ($element[$key]['#theme'] as $theme_key => $theme_value) {
+                  $suggestions[] = 'container__' . $theme_value;
+                }
+              }
+              else {
+                $suggestions[] = 'container__' . $element[$key]['#theme'];
+              }
+            }
+          }
+        }
+        elseif (!empty($element['#type'])) {
+          // As long as #type is not also 'container', it's just as good an
+          // indication of context as #theme. This will capture a Views
+          // element container, e.g. container__view
+          $suggestions[] = 'container__' . $element['#type'];
+        }
+      }
+
+        // If there is a #name property, this can be useful too. For example,
+        // Views module uses this hook, and this would generate a suggestion
+        // like: container__view__machinename.
+        if (!empty($element['#name']) && !empty($element['#type'])) {
+          $suggestions[] = 'container__' . $element['#type'] . '__' . $element['#name'];
+        }
+      }
+    }
+
+  // Re-route some templates based on those smarter suggestions.
+  if (in_array('container__view', $suggestions)) {
+    $suggestions[] = 'container__bare';
+  }
+}
