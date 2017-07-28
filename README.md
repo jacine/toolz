@@ -21,13 +21,3 @@ $settings['toolz_css_dev'] = TRUE;
 ## Better Template Suggestions for Container Hook
 
 Dealing with the `container.html.twig` template is a pain, because it lacks context. This module adds additional theme hook suggestions where possible to make theming easier.
-
-## Twig Extension to Access Settings
-
-A Twig extension to use `settings.php` defined `$settings` in Twig templates. Thanks @dawehner. Usage:
-
-```twig
-{% if setting('setting_name') %}
- {{ 'Hello!'|t }}
-{% endif %}
-```
