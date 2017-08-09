@@ -1,6 +1,7 @@
 <?php
 
 use Drupal\Core\Site\Settings;
+use Drupal\Core\Render\Element;
 
 /**
  * Implements hook_template_preprocess_default_variables_alter().
